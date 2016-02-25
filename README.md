@@ -11,3 +11,4 @@ Require npm packages:
 - body-parser
 
 
+For testing recommend postman - https://chrome.google.com/webstore/category/apps
