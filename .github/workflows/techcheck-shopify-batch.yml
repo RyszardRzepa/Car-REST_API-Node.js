@@ -1,0 +1,26 @@
+name: TechCheck Shopify Batch
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/techcheck-shopify-batch.yml
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: techcheck-shopify-batch-20260901
+      - name: Run TechCheck batch
+        run: node techcheck-batch.mjs
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: techcheck-results
+          path: techcheck-results.json
+          if-no-files-found: error
