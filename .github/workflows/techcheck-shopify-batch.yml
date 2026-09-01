@@ -10,20 +10,17 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
           ref: techcheck-shopify-batch-20260901
-      - name: Resume TechCheck batch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PREVIOUS_JOB_ID: '99902148990'
-        run: node techcheck-resume.mjs
-      - name: Upload results
+      - name: Retry unresolved TechCheck domains
+        run: node techcheck-final-retry.mjs
+      - name: Upload retry results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: techcheck-results
-          path: techcheck-results.json
+          name: techcheck-final-retry
+          path: techcheck-final-retry.json
           if-no-files-found: error
