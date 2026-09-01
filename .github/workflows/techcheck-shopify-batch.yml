@@ -10,13 +10,16 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
           ref: techcheck-shopify-batch-20260901
-      - name: Run TechCheck batch
-        run: node techcheck-batch.mjs
+      - name: Resume TechCheck batch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PREVIOUS_JOB_ID: '99902148990'
+        run: node techcheck-resume.mjs
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
